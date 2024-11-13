@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  spring-app:
+    build: 
+      context: portfolio_back
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/portfolio?allowPublicKeyRetrieval=true&useSSL=false
+
+      SPRING_DATASOURCE_USERNAME: db_SecureOps23
+      SPRING_DATASOURCE_PASSWORD: u#49Jk*zY@3wLz%pD8
+    
+    
+    networks:
+      - conexion_from_spring
+
+  mysql-db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: u#49Jk*zY@3wLz%pD8  
+      MYSQL_DATABASE: portfolio
+      MYSQL_USER: db_SecureOps23
+      MYSQL_PASSWORD: u#49Jk*zY@3wLz%pD8
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - conexion_from_spring
+
+
+  adminer:
+      image: adminer
+      container_name: adminer_spring
+      restart: always
+      ports:
+        - 8080:8080
+      networks:
+        - conexion_from_spring
+
+networks:
+  conexion_from_spring:
+    driver : bridge
+    name: conexion_from_spring
