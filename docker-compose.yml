@@ -21,7 +21,7 @@ services:
     restart: always
 
   mysql-db:
-    image: mysql:8.0
+    image: mysql:latest
     ports:
       - "3306:3306"
     environment:
