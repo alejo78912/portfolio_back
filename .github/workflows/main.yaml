@@ -52,17 +52,19 @@ jobs:
         echo "Bajando los contenedores existentes..."
         docker-compose down
 
-        echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
+        echo "Creando el archivo .env con las variables de entorno..."
+        
+        # Crear archivo .env con las variables de entorno
+        echo "SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}" > .env
+        echo "SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}" >> .env
+        echo "SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}" >> .env
+        echo "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}" >> .env
+        echo "MYSQL_DATABASE=${MYSQL_DATABASE}" >> .env
+        echo "API_TOKEN=${API_TOKEN}" >> .env
+        echo "SMTP_EMAIL=${SMTP_EMAIL}" >> .env
+        echo "SMTP_PASSWORD=${SMTP_PASSWORD}" >> .env
 
-        # Pasar las variables de entorno al contenedor
-        export SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-        export SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-        export SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-        export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        export MYSQL_DATABASE=${MYSQL_DATABASE}
-        export API_TOKEN=${API_TOKEN}
-        export SMTP_EMAIL=${SMTP_EMAIL}
-        export SMTP_PASSWORD=${SMTP_PASSWORD}
+        echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
 
         docker-compose build
         docker-compose up -d
