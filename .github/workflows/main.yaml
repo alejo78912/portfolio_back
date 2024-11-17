@@ -70,7 +70,7 @@ jobs:
         docker-compose up -d
 
         echo "Estado de los contenedores:"
-        docker compose ps
+        docker-compose ps
 
         echo "Despliegue completado exitosamente."
         EOF

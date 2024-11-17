@@ -18,9 +18,10 @@ services:
       SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
     networks:
       - conexion_from_spring
+    restart: always
 
   mysql-db:
-    image: mysql:latest
+    image: mysql:8.0
     ports:
       - "3306:3306"
     environment:
@@ -32,20 +33,20 @@ services:
       - ./mysql-data:/var/lib/mysql
     networks:
       - conexion_from_spring
+    restart: always
 
   adminer:
-      image: adminer
-      container_name: adminer_spring
-      restart: always
-      ports:
-        - 8080:8080
-      networks:
-        - conexion_from_spring
+    image: adminer
+    container_name: adminer_spring
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - conexion_from_spring
 
 networks:
   conexion_from_spring:
     driver: bridge
-
 
 volumes:
   mysql-data:
