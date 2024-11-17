@@ -10,12 +10,12 @@ services:
     depends_on:
       - mysql-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/portfolio?allowPublicKeyRetrieval=true&useSSL=false
-
-      SPRING_DATASOURCE_USERNAME: db_SecureOps23
-      SPRING_DATASOURCE_PASSWORD: u#49Jk*zY@3wLz%pD8
-    
-    
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      API_TOKEN: ${API_TOKEN}
+      SPRING_MAIL_USERNAME: ${SMTP_EMAIL}
+      SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
     networks:
       - conexion_from_spring
 
@@ -24,15 +24,14 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: u#49Jk*zY@3wLz%pD8  
-      MYSQL_DATABASE: portfolio
-      MYSQL_USER: db_SecureOps23
-      MYSQL_PASSWORD: u#49Jk*zY@3wLz%pD8
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
       - ./mysql-data:/var/lib/mysql
     networks:
       - conexion_from_spring
-
 
   adminer:
       image: adminer
@@ -45,5 +44,4 @@ services:
 
 networks:
   conexion_from_spring:
-    driver : bridge
-    name: conexion_from_spring
+    driver: bridge

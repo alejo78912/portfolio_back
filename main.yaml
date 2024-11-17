@@ -1,0 +1,76 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup SSH Key
+      env:
+        PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 400 private_key.pem
+
+    - name: Deploy to EC2
+      env:
+        HOST_NAME: ${{ secrets.SSH_HOST }}
+        USER_NAME: ${{ secrets.USER_NAME }}
+        SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+        SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+        SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+        MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      run: |
+        echo "Conectando al servidor EC2..."
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOST_NAME} << 'EOF'
+        
+        PROJECT_DIR="/home/ubuntu/portfolio"
+        REPO_URL="https://github.com/alejo78912/portfolio_back.git"
+
+        echo "Verificando repositorio..."
+        if [ ! -d "$PROJECT_DIR/.git" ]; then
+            echo "Clonando el repositorio..."
+            git clone $REPO_URL $PROJECT_DIR
+        fi
+
+        cd $PROJECT_DIR
+        echo "Actualizando el repositorio..."
+        git fetch --all
+        git reset --hard origin/main
+
+        echo "Construyendo y desplegando contenedores Docker..."
+
+        docker compose down
+
+        # Pasar las variables de entorno al contenedor
+        export SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+        export SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+        export SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+        export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        export MYSQL_DATABASE=${MYSQL_DATABASE}
+        export API_TOKEN=${API_TOKEN}
+        export SMTP_EMAIL=${SMTP_EMAIL}
+        export SMTP_PASSWORD=${SMTP_PASSWORD}
+
+        docker compose build --pull
+        docker compose up -d
+
+        echo "Estado de los contenedores:"
+        docker compose ps
+
+        echo "Despliegue completado exitosamente."
+        EOF
+
+    - name: Cleanup
+      run: rm -f private_key.pem

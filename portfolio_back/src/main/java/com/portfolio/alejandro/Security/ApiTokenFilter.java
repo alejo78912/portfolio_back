@@ -2,6 +2,7 @@ package com.portfolio.alejandro.Security;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,8 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ApiTokenFilter extends OncePerRequestFilter {
 
-    private static final String API_TOKEN = "W7j#E2u9kL8ZpV!dQk@xR6f5T3yF$zB0P2zM8Gv0F9V";  
-    
+    @Value("${API_TOKEN}")
+    private String apiToken; // Obtener el token desde variable de entorno
+
     @Override
     protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, HttpServletResponse response,
             jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
@@ -23,7 +25,7 @@ public class ApiTokenFilter extends OncePerRequestFilter {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);  
 
-            if (token.equals(API_TOKEN)) {
+            if (token.equals(apiToken)) {
                 UsernamePasswordAuthenticationToken authentication = 
                     new UsernamePasswordAuthenticationToken("user", null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
