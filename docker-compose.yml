@@ -46,3 +46,8 @@ services:
 networks:
   conexion_from_spring:
     driver: bridge
+
+
+volumes:
+  mysql-data:
+    driver: local
