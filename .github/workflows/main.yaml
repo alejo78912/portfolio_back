@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Setup SSH Key
       env:
@@ -23,14 +24,14 @@ jobs:
       env:
         HOST_NAME: ${{ secrets.SSH_HOST }}
         USER_NAME: ${{ secrets.USER_NAME }}
-        SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-        SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-        SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-        MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-        MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-        API_TOKEN: ${{ secrets.API_TOKEN }}
-        SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
-        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        SPRING_DATASOURCE_URL: ${{ Variables.SPRING_DATASOURCE_URL }}
+        SPRING_DATASOURCE_USERNAME: ${{ Variables.SPRING_DATASOURCE_USERNAME }}
+        SPRING_DATASOURCE_PASSWORD: ${{ Variables.SPRING_DATASOURCE_PASSWORD }}
+        MYSQL_ROOT_PASSWORD: ${{ Variables.MYSQL_ROOT_PASSWORD }}
+        MYSQL_DATABASE: ${{ Variables.MYSQL_DATABASE }}
+        API_TOKEN: ${{ Variables.API_TOKEN }}
+        SMTP_EMAIL: ${{ Variables.SMTP_EMAIL }}
+        SMTP_PASSWORD: ${{ Variables.SMTP_PASSWORD }}
       run: |
         echo "Conectando al servidor EC2..."
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOST_NAME} << 'EOF'
@@ -38,7 +39,7 @@ jobs:
         PROJECT_DIR="/home/ubuntu/portfolio"
         REPO_URL="https://github.com/alejo78912/portfolio_back.git"
 
-        echo "Verificando repositorio..."
+        echo "Verificando si el repositorio existe..."
         if [ ! -d "$PROJECT_DIR/.git" ]; then
             echo "Clonando el repositorio..."
             git clone $REPO_URL $PROJECT_DIR
@@ -50,11 +51,11 @@ jobs:
         fi
 
         cd $PROJECT_DIR
-        echo "Bajando los contenedores existentes..."
+        echo "Deteniendo contenedores existentes..."
         docker-compose down --volumes
 
         echo "Creando el archivo .env con las variables de entorno..."
-        
+
         # Crear archivo .env con las variables de entorno
         echo "SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}" > .env
         echo "SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}" >> .env
@@ -65,12 +66,14 @@ jobs:
         echo "SMTP_EMAIL=${SMTP_EMAIL}" >> .env
         echo "SMTP_PASSWORD=${SMTP_PASSWORD}" >> .env
 
-        echo "Verificando el contenido del archivo .env:"
-        cat .env  # Verificar que las variables están bien escritas
+        # Verificar contenido del archivo .env
+        echo "Contenido del archivo .env:"
+        cat .env
 
-        echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
-
-        docker-compose build --no-cache  # Asegúrate de reconstruir sin cache
+        echo "Construyendo y levantando los contenedores..."
+        
+        # Construir y levantar contenedores
+        docker-compose build --no-cache
         docker-compose up -d
 
         echo "Estado de los contenedores:"
