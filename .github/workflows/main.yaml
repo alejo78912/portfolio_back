@@ -70,14 +70,14 @@ jobs:
 
         echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
 
-        docker-compose build
+        docker-compose build --no-cache  # Asegúrate de reconstruir sin cache
         docker-compose up -d
 
         echo "Estado de los contenedores:"
         docker-compose ps
 
         echo "Despliegue completado exitosamente."
-        EOF
+EOF
 
     - name: Cleanup
       run: rm -f private_key.pem
