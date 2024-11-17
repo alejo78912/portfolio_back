@@ -42,15 +42,16 @@ jobs:
         if [ ! -d "$PROJECT_DIR/.git" ]; then
             echo "Clonando el repositorio..."
             git clone $REPO_URL $PROJECT_DIR
+        else
+            echo "Actualizando el repositorio..."
+            cd $PROJECT_DIR
+            git fetch --all
+            git reset --hard origin/main
         fi
 
         cd $PROJECT_DIR
-        echo "Actualizando el repositorio..."
-        git fetch --all
-        git reset --hard origin/main
-
         echo "Bajando los contenedores existentes..."
-        docker-compose down
+        docker-compose down --volumes
 
         echo "Creando el archivo .env con las variables de entorno..."
         
@@ -64,6 +65,9 @@ jobs:
         echo "SMTP_EMAIL=${SMTP_EMAIL}" >> .env
         echo "SMTP_PASSWORD=${SMTP_PASSWORD}" >> .env
 
+        echo "Verificando el contenido del archivo .env:"
+        cat .env  # Verificar que las variables están bien escritas
+
         echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
 
         docker-compose build
@@ -71,8 +75,6 @@ jobs:
 
         echo "Estado de los contenedores:"
         docker-compose ps
-
-        cat docker-compose.yml
 
         echo "Despliegue completado exitosamente."
         EOF
