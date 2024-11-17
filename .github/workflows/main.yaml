@@ -72,6 +72,8 @@ jobs:
         echo "Estado de los contenedores:"
         docker-compose ps
 
+        cat docker-compose.yml
+
         echo "Despliegue completado exitosamente."
         EOF
 
