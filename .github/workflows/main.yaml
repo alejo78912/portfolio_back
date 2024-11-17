@@ -77,7 +77,7 @@ jobs:
         docker-compose ps
 
         echo "Despliegue completado exitosamente."
-EOF
+        EOF
 
     - name: Cleanup
       run: rm -f private_key.pem
