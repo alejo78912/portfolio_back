@@ -28,7 +28,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
       MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      MYSQL_LOWER_CASE_TABLE_NAMES: 1  # Aquí agregas la variable
     volumes:
       - ./mysql-data:/var/lib/mysql
     networks:
