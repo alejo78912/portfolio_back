@@ -30,17 +30,18 @@ services:
       MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
       MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - conexion_from_spring
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
 
   adminer:
     image: adminer
     container_name: adminer_spring
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
     networks:
       - conexion_from_spring
 
