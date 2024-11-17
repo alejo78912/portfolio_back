@@ -49,9 +49,10 @@ jobs:
         git fetch --all
         git reset --hard origin/main
 
-        echo "Construyendo y desplegando contenedores Docker..."
-
+        echo "Bajando los contenedores existentes..."
         docker compose down
+
+        echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
 
         # Pasar las variables de entorno al contenedor
         export SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
