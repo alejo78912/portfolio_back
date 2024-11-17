@@ -24,14 +24,14 @@ jobs:
       env:
         HOST_NAME: ${{ secrets.SSH_HOST }}
         USER_NAME: ${{ secrets.USER_NAME }}
-        SPRING_DATASOURCE_URL: ${{ Variables.SPRING_DATASOURCE_URL }}
-        SPRING_DATASOURCE_USERNAME: ${{ Variables.SPRING_DATASOURCE_USERNAME }}
-        SPRING_DATASOURCE_PASSWORD: ${{ Variables.SPRING_DATASOURCE_PASSWORD }}
-        MYSQL_ROOT_PASSWORD: ${{ Variables.MYSQL_ROOT_PASSWORD }}
-        MYSQL_DATABASE: ${{ Variables.MYSQL_DATABASE }}
-        API_TOKEN: ${{ Variables.API_TOKEN }}
-        SMTP_EMAIL: ${{ Variables.SMTP_EMAIL }}
-        SMTP_PASSWORD: ${{ Variables.SMTP_PASSWORD }}
+        SPRING_DATASOURCE_URL: ${{ variables.SPRING_DATASOURCE_URL }}
+        SPRING_DATASOURCE_USERNAME: ${{ variables.SPRING_DATASOURCE_USERNAME }}
+        SPRING_DATASOURCE_PASSWORD: ${{ variables.SPRING_DATASOURCE_PASSWORD }}
+        MYSQL_ROOT_PASSWORD: ${{ variables.MYSQL_ROOT_PASSWORD }}
+        MYSQL_DATABASE: ${{ variables.MYSQL_DATABASE }}
+        API_TOKEN: ${{ variables.API_TOKEN }}
+        SMTP_EMAIL: ${{ variables.SMTP_EMAIL }}
+        SMTP_PASSWORD: ${{ variables.SMTP_PASSWORD }}
       run: |
         echo "Conectando al servidor EC2..."
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOST_NAME} << 'EOF'
