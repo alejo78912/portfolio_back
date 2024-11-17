@@ -50,7 +50,7 @@ jobs:
         git reset --hard origin/main
 
         echo "Bajando los contenedores existentes..."
-        docker compose down
+        docker-compose down
 
         echo "Construyendo las nuevas imágenes y desplegando los contenedores..."
 
@@ -64,8 +64,8 @@ jobs:
         export SMTP_EMAIL=${SMTP_EMAIL}
         export SMTP_PASSWORD=${SMTP_PASSWORD}
 
-        docker compose build --pull
-        docker compose up -d
+        docker-compose build
+        docker-compose up -d
 
         echo "Estado de los contenedores:"
         docker compose ps
