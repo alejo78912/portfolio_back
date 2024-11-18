@@ -52,7 +52,9 @@ jobs:
 
         cd $PROJECT_DIR
         echo "Deteniendo contenedores existentes..."
-        docker-compose down --volumes
+        docker-compose down --volumes --remove-orphans
+
+        docker system prune -a
 
         echo "Creando el archivo .env con las variables de entorno..."
 
