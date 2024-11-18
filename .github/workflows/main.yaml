@@ -54,7 +54,7 @@ jobs:
         echo "Deteniendo contenedores existentes..."
         docker-compose down --volumes --remove-orphans
 
-        docker system prune -a
+        docker system prune -a -y
 
         echo "Creando el archivo .env con las variables de entorno..."
 
