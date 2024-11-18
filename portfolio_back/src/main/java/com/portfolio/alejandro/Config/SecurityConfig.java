@@ -1,5 +1,6 @@
 package com.portfolio.alejandro.Config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,27 +20,35 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${API_TOKEN}")
+    private String apiToken;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors()  // Habilita CORS en la configuración de seguridad
+            .cors()
             .and()
-            .csrf().disable()  // Desactiva CSRF para APIs
-            .addFilterAt(new ApiTokenFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+            .csrf().disable()
+            .addFilterAt(apiTokenFilter(), AbstractPreAuthenticatedProcessingFilter.class)
             .authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/api/contacts/**").authenticated()  // Protección de todas las rutas de contactos
-                    .requestMatchers("/public/**").permitAll()  // Rutas públicas sin protección
-                    .anyRequest().authenticated()  // Asegura que cualquier otra solicitud sea autenticada
+                    .requestMatchers("/api/contacts/**").authenticated()
+                    .requestMatchers("/public/**").permitAll()
+                    .anyRequest().authenticated()
             );
 
         return http.build();
     }
 
     @Bean
+    public ApiTokenFilter apiTokenFilter() {
+        return new ApiTokenFilter(apiToken);
+    }
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));  // Permitir solicitudes desde Angular
+        configuration.setAllowedOrigins(List.of("*")); // Permitir todas las solicitudes
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
