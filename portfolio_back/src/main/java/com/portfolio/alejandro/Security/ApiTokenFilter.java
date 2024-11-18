@@ -15,7 +15,8 @@ public class ApiTokenFilter extends OncePerRequestFilter {
 
     @Value("${API_TOKEN}")
     private String apiToken; // Obtener el token desde variable de entorno
-
+    //proof
+    
     @Override
     protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, HttpServletResponse response,
             jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
