@@ -18,14 +18,12 @@ services:
       SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
     networks:
       - conexion_from_spring
-    restart: always
 
   mysql-db:
     build: 
       context: ./MySQL
       dockerfile: Dockerfile
     container_name: database
-    restart: always
     ports:
       - 3306:3306
     env_file:
