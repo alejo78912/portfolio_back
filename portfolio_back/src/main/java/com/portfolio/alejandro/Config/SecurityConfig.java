@@ -46,9 +46,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Configuración de CORS
-        configuration.setAllowedOrigins(List.of("*")); // Permitir todos los orígenes
+        configuration.setAllowedOrigins(List.of("https//:portfolio.alejo78912.com")); // Permitir todos los orígenes
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Headers permitidos
+        configuration.setAllowedHeaders(List.of("Authorization")); // Headers permitidos
         configuration.setExposedHeaders(List.of("Authorization")); // Headers expuestos
         configuration.setAllowCredentials(true); // Permitir credenciales
 
