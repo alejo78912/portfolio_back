@@ -21,7 +21,7 @@ import com.portfolio.alejandro.Service.LanguageService;
 
 @RestController
 @RequestMapping("/api/languages")
-@CrossOrigin(origins = "https://portfolio.alejo78912.com")
+@CrossOrigin(origins = "*")
 public class DemoControllerLanguage {
  
      @Autowired

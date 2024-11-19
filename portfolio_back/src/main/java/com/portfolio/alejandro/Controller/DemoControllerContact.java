@@ -23,7 +23,7 @@ import com.portfolio.alejandro.Service.EmailService;
 
 @RestController
 @RequestMapping("/api/contacts")
-@CrossOrigin(origins = "https://portfolio.alejo78912.com")
+@CrossOrigin(origins = "*")
 public class DemoControllerContact {
     
      @Autowired

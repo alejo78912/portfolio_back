@@ -46,10 +46,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Configuración de CORS
-        configuration.setAllowedOrigins(List.of(
-            "https://portfolio.alejo78912.com", 
-            "https://back.alejo78912.com"
-        ));
+        configuration.setAllowedOrigins(List.of("*")); // Permite solicitudes de todos los orígenes
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
         configuration.setAllowedHeaders(List.of("Authorization")); // Headers permitidos
         configuration.setExposedHeaders(List.of("Authorization")); // Headers expuestos

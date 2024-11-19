@@ -21,7 +21,7 @@ import com.portfolio.alejandro.Service.TechService;
 
 @RestController
 @RequestMapping("/api/techs")
-@CrossOrigin(origins = "https://portfolio.alejo78912.com")
+@CrossOrigin(origins = "*")
 public class DemoControllerTech {
 
     @Autowired
