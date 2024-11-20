@@ -1,7 +1,6 @@
 package com.portfolio.alejandro.Security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,27 +31,21 @@ public class ApiTokenFilter extends OncePerRequestFilter {
             token = token.substring(7); // Remover "Bearer "
 
             if (token.equals(apiToken)) {
-                // Si el token es válido, crea la autenticación y establece el contexto de seguridad
                 UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken("user", null, Collections.emptyList());  // Puedes añadir roles aquí
+                    new UsernamePasswordAuthenticationToken("user", null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                // Si el token es inválido, responde con error 403 Forbidden en formato JSON
                 response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setContentType("application/json");
-                response.getWriter().write("{\"error\":\"Forbidden: Invalid API Token\"}");
+                response.getWriter().write("Forbidden: Invalid API Token");
                 return;
             }
         } else {
-            // Si no hay token en el encabezado, responde con error 400 Bad Request en formato JSON
             response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\":\"Bad Request: Missing or Invalid Authorization header\"}");
+            response.getWriter().write("Bad Request: Missing or Invalid Authorization header");
             return;
         }
 
-        // Continúa con el siguiente filtro en la cadena
         filterChain.doFilter(request, response);
     }
 }

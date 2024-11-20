@@ -19,8 +19,8 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    
-    private String apiToken = "W7jksi91jsiwqoiqwi189wjqiwjwiqwq9j92u192ji21y9rhqwouE2u9kL8ZpVdQk";
+    @Value("${API_TOKEN}")
+    private String apiToken;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://portfolio.alejo78912.com", "https://back.alejo78912.com")); // Cambia * por dominios específicos
+       configuration.setAllowedOrigins(List.of("https://portfolio.alejo78912.com", "https://back.alejo78912.com")); // Cambia * por dominios específicos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setExposedHeaders(List.of("Authorization"));

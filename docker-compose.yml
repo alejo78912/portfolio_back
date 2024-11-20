@@ -15,6 +15,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_MAIL_USERNAME: ${SMTP_EMAIL}
       SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
+      API_TOKEN: ${API_TOKEN}
       SSL_KEYSTORE_PASSWORD: ${SSL_KEYSTORE_PASSWORD}
     volumes:
       - ./keystore.p12:/app/keystore.p12 # Asegura que el keystore esté disponible en el contenedor
