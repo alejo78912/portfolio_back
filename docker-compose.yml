@@ -6,16 +6,18 @@ services:
       context: portfolio_back
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8443:8443" # HTTPS utiliza el puerto 8443
     depends_on:
       - mysql-db
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      API_TOKEN: ${API_TOKEN}
       SPRING_MAIL_USERNAME: ${SMTP_EMAIL}
       SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
+      SSL_KEYSTORE_PASSWORD: ${SSL_KEYSTORE_PASSWORD}
+    volumes:
+      - ./keystore.p12:/app/keystore.p12 # Asegura que el keystore esté disponible en el contenedor
     networks:
       - conexion_from_spring
 
@@ -25,7 +27,7 @@ services:
       dockerfile: Dockerfile
     container_name: database
     ports:
-      - 3306:3306
+      - "3306:3306"
     env_file:
       - .env
     environment:
@@ -39,10 +41,10 @@ services:
     networks:
       - conexion_from_spring
     healthcheck:
-        test: ["CMD","mysql", "-u", "root", "-proot"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
+      test: ["CMD", "mysql", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1;"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   adminer:
     image: adminer

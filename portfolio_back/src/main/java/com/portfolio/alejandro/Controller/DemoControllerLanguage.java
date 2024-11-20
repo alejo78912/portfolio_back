@@ -21,7 +21,7 @@ import com.portfolio.alejandro.Service.LanguageService;
 
 @RestController
 @RequestMapping("/api/languages")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://back.alejo78912.com", "https://front.alejo78912.com"})
 public class DemoControllerLanguage {
  
      @Autowired
@@ -32,7 +32,7 @@ public class DemoControllerLanguage {
 	        return ResponseEntity.ok(languageService.languages());
 	    }
 
-       
+        
     private static final String SQL_INJECTION_PATTERN = ".*(\\b(SELECT|DROP|DELETE|INSERT|UPDATE|CREATE|ALTER|TRUNCATE|REVOKE|GRANT|EXEC|UNION|--|;|\\b(?:OR|AND)\\b).+).*";
 
     @PostMapping

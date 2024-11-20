@@ -11,7 +11,7 @@ public class Webconfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**") // Aplica la configuración a todas las rutas
-            .allowedOrigins("*")
+            .allowedOrigins("https://portfolio.alejo78912.com", "https://back.alejo78912.com")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
             .allowedHeaders("Authorization") // Permitir todos los headers
             .allowCredentials(true); // Permitir el envío de credenciales (cookies, headers de autorización)

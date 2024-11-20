@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.portfolio.alejandro.Security.ApiTokenFilter;
 
 import java.util.List;
@@ -25,13 +26,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
-            .csrf().disable() // Desactiva CSRF para permitir solicitudes sin autenticación de formularios
-            .addFilterAt(apiTokenFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-            .authorizeRequests(authorizeRequests ->
-                authorizeRequests
-                    .requestMatchers("/api/contacts/**").authenticated() // Requiere autenticación
-                    .requestMatchers("/public/**").permitAll() // Acceso público
-                    .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
+            .csrf().disable() // Desactiva CSRF
+            .addFilterAt(apiTokenFilter(), AbstractPreAuthenticatedProcessingFilter.class) // Filtro personalizado
+            .authorizeRequests(authorizeRequests -> 
+                authorizeRequests.anyRequest().authenticated() // Todas las rutas requieren autenticación
             );
 
         return http.build();
@@ -45,15 +43,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Configuración de CORS
-        configuration.setAllowedOrigins(List.of("*")); // Permite solicitudes de todos los orígenes
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
-        configuration.setAllowedHeaders(List.of("Authorization")); // Headers permitidos
-        configuration.setExposedHeaders(List.of("Authorization")); // Headers expuestos
+        configuration.setAllowedOrigins(List.of("https://portfolio.alejo78912.com", "https://back.alejo78912.com")); // Cambia * por dominios específicos
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true); // Permitir credenciales
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplicar configuración a todas las rutas
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
