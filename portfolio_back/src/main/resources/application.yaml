@@ -1,0 +1,7 @@
+server:
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.jks
+    key-store-password: alejandro
+    key-store-type: JKS
+    key-alias: myalias
