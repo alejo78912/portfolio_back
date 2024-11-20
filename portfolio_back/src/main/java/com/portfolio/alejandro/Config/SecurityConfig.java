@@ -19,8 +19,8 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${API_TOKEN}")
-    private String apiToken;
+    
+    private String apiToken = "W7jksi91jsiwqoiqwi189wjqiwjwiqwq9j92u192ji21y9rhqwouE2u9kL8ZpVdQk";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

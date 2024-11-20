@@ -6,7 +6,7 @@ services:
       context: portfolio_back
       dockerfile: Dockerfile
     ports:
-      - "8443:8443" # HTTPS utiliza el puerto 8443
+      - "8000:8000" # HTTPS utiliza el puerto 8443
     depends_on:
       - mysql-db
     environment:
