@@ -45,7 +45,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
        configuration.setAllowedOrigins(List.of("https://portfolio.alejo78912.com", "https://back.alejo78912.com")); // Cambia * por dominios específicos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(List.of("Authorization"));
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true); // Permitir credenciales
 
