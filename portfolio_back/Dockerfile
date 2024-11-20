@@ -9,6 +9,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /usr/app
 COPY --from=build /usr/src/app/target/alejandro-0.0.1-SNAPSHOT.jar .
 
-EXPOSE 8000
+EXPOSE 8443
 
 ENTRYPOINT ["java", "-jar", "alejandro-0.0.1-SNAPSHOT.jar"]
